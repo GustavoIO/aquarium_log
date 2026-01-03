@@ -1,0 +1,30 @@
+<%= form_with model: aquarium, class: "needs-validation" do |form| %>
+  <% if aquarium.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(aquarium.errors.count, "error") %> prevented this aquarium from being saved:</h5>
+      <ul class="mb-0">
+        <% aquarium.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-control #{'is-invalid' if aquarium.errors[:name].any?}", required: true %>
+    <% if aquarium.errors[:name].any? %>
+      <div class="invalid-feedback"><%= aquarium.errors[:name].join(", ") %></div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, class: "form-control", rows: 3 %>
+    <div class="form-text">Optional notes about this aquarium.</div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

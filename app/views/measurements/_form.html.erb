@@ -1,0 +1,78 @@
+<%= form_with model: [@aquarium, measurement], class: "needs-validation" do |form| %>
+  <% if measurement.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(measurement.errors.count, "error") %> prevented this measurement from being saved:</h5>
+      <ul class="mb-0">
+        <% measurement.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-6 col-md-4 mb-3">
+      <%= form.label :measured_at, "Date", class: "form-label" %>
+      <%= form.date_field :measured_at, class: "form-control #{'is-invalid' if measurement.errors[:measured_at].any?}", required: true, value: measurement.measured_at&.to_date %>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <%= form.label :measured_at_time, "Time (24h)", class: "form-label" %>
+      <input type="text" name="measured_at_time" id="measured_at_time"
+             class="form-control <%= 'is-invalid' if measurement.errors[:measured_at].any? %>"
+             value="<%= measurement.measured_at&.strftime('%H:%M') %>"
+             pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]"
+             placeholder="14:30" required>
+      <% if measurement.errors[:measured_at].any? %>
+        <div class="invalid-feedback"><%= measurement.errors[:measured_at].join(", ") %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4 col-md-4 mb-3">
+      <%= form.label :ph, "pH", class: "form-label" %>
+      <%= form.number_field :ph, class: "form-control #{'is-invalid' if measurement.errors[:ph].any?}", step: 0.01, min: 0, max: 14 %>
+      <% if measurement.errors[:ph].any? %>
+        <div class="invalid-feedback"><%= measurement.errors[:ph].join(", ") %></div>
+      <% end %>
+    </div>
+
+    <div class="col-4 col-md-4 mb-3">
+      <%= form.label :kh, "KH", class: "form-label" %>
+      <%= form.number_field :kh, class: "form-control #{'is-invalid' if measurement.errors[:kh].any?}", step: 0.1, min: 0 %>
+      <% if measurement.errors[:kh].any? %>
+        <div class="invalid-feedback"><%= measurement.errors[:kh].join(", ") %></div>
+      <% end %>
+    </div>
+
+    <div class="col-4 col-md-4 mb-3">
+      <%= form.label :gh, "GH", class: "form-label" %>
+      <%= form.number_field :gh, class: "form-control #{'is-invalid' if measurement.errors[:gh].any?}", step: 0.1, min: 0 %>
+      <% if measurement.errors[:gh].any? %>
+        <div class="invalid-feedback"><%= measurement.errors[:gh].join(", ") %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6 col-md-4 mb-3">
+      <%= form.label :nitrates, "NO3 (mg/l)", class: "form-label" %>
+      <%= form.number_field :nitrates, class: "form-control #{'is-invalid' if measurement.errors[:nitrates].any?}", step: 0.1, min: 0 %>
+      <% if measurement.errors[:nitrates].any? %>
+        <div class="invalid-feedback"><%= measurement.errors[:nitrates].join(", ") %></div>
+      <% end %>
+    </div>
+
+    <div class="col-6 col-md-4 mb-3">
+      <%= form.label :phosphates, "PO4 (mg/l)", class: "form-label" %>
+      <%= form.number_field :phosphates, class: "form-control #{'is-invalid' if measurement.errors[:phosphates].any?}", step: 0.001, min: 0 %>
+      <% if measurement.errors[:phosphates].any? %>
+        <div class="invalid-feedback"><%= measurement.errors[:phosphates].join(", ") %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.submit class: "btn btn-primary w-100 w-md-auto" %>
+  </div>
+<% end %>

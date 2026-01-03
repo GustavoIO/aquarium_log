@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
+  database: aquarium_log_development
+  username: <%= ENV.fetch("DATABASE_USER", "postgres") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "aquarium_secret") %>
+
+test:
+  <<: *default
+  host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
+  database: aquarium_log_test
+  username: <%= ENV.fetch("DATABASE_USER", "postgres") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "aquarium_secret") %>
+
+production:
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
