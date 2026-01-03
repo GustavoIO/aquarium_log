@@ -1,5 +1,4 @@
 # Production docker-compose for Dockge
-# Replace YOUR_USERNAME with your GitHub username
 
 services:
   db:
@@ -17,7 +16,7 @@ services:
       retries: 5
 
   web:
-    image: ghcr.io/YOUR_USERNAME/aquarium_log:latest
+    image: ghcr.io/gustavoio/aquarium_log:latest
     restart: always
     ports:
       - "3000:3000"
