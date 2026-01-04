@@ -6,8 +6,19 @@
 <% if @aquariums.any? %>
   <div class="row">
     <% @aquariums.each do |aquarium| %>
+      <% latest_photo = aquarium.measurements.find { |m| m.photo.attached? }&.photo %>
       <div class="col-md-4 mb-4">
-        <div class="card <%= 'border-primary' if current_aquarium&.id == aquarium.id %>">
+        <div class="card <%= 'border-primary' if current_aquarium&.id == aquarium.id %>"
+             style="cursor: pointer;"
+             data-aquarium-url="<%= aquarium_path(aquarium) %>"
+             onclick="handleCardClick(event, this)">
+          <% if latest_photo %>
+            <div style="height: 200px; overflow: hidden; background-color: #f8f9fa;">
+              <%= image_tag latest_photo.variant(resize_to_fill: [400, 200]),
+                  class: "card-img-top",
+                  style: "width: 100%; height: 200px; object-fit: cover;" %>
+            </div>
+          <% end %>
           <div class="card-body">
             <h5 class="card-title"><%= aquarium.name %></h5>
             <% if aquarium.description.present? %>
@@ -18,8 +29,7 @@
                 <%= pluralize(aquarium.measurements.count, "measurement") %>
               </small>
             </p>
-            <div class="d-flex gap-2">
-              <%= link_to "Select", aquarium, class: "btn btn-primary btn-sm" %>
+            <div class="d-flex gap-2" onclick="event.stopPropagation()">
               <%= link_to "Edit", edit_aquarium_path(aquarium), class: "btn btn-outline-secondary btn-sm" %>
               <%= button_to "Delete", aquarium, method: :delete,
                   class: "btn btn-outline-danger btn-sm",
@@ -35,3 +45,18 @@
     <p class="mb-0">No aquariums yet. <%= link_to "Add your first aquarium", new_aquarium_path %> to get started!</p>
   </div>
 <% end %>
+
+<script>
+function handleCardClick(event, card) {
+  // Don't navigate if clicking on a button or link
+  if (event.target.tagName === 'A' ||
+      event.target.tagName === 'BUTTON' ||
+      event.target.closest('button') ||
+      event.target.closest('a')) {
+    return;
+  }
+
+  // Navigate to the aquarium
+  window.location.href = card.dataset.aquariumUrl;
+}
+</script>

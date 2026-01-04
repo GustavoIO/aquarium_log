@@ -2,7 +2,7 @@ class AquariumsController < ApplicationController
   before_action :set_aquarium, only: [:show, :edit, :update, :destroy, :chart_data]
 
   def index
-    @aquariums = Aquarium.order(:name)
+    @aquariums = Aquarium.order(:name).includes(measurements: { photo_attachment: :blob })
   end
 
   def show
