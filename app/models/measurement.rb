@@ -1,5 +1,6 @@
 class Measurement < ApplicationRecord
   belongs_to :aquarium
+  has_one_attached :photo
 
   validates :measured_at, presence: true
   validates :ph, numericality: { greater_than: 0, less_than: 14, allow_nil: true }

@@ -73,6 +73,19 @@
   </div>
 
   <div class="mb-3">
+    <%= form.label :photo, "Photo (optional)", class: "form-label" %>
+    <%= form.file_field :photo, class: "form-control", accept: "image/*" %>
+    <% if measurement.photo.attached? %>
+      <div class="mt-2">
+        <small class="text-muted">Current photo:</small>
+        <%= image_tag measurement.photo.variant(resize_to_limit: [200, 200]), class: "d-block mt-1" %>
+        <%= form.check_box :remove_photo, class: "form-check-input me-1" %>
+        <%= form.label :remove_photo, "Remove photo", class: "form-check-label" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
     <%= form.submit class: "btn btn-primary w-100 w-md-auto" %>
   </div>
 <% end %>

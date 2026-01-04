@@ -6,6 +6,7 @@ RUN apt-get update -qq && \
     libpq-dev \
     libyaml-dev \
     nodejs \
+    libvips \
     && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 WORKDIR /app

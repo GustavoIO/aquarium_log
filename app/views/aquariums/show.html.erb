@@ -39,6 +39,7 @@
           <thead>
             <tr>
               <th>Date</th>
+              <th>Photo</th>
               <th class="text-center param-col" data-param="ph">pH</th>
               <th class="text-center param-col" data-param="kh">KH</th>
               <th class="text-center param-col" data-param="gh">GH</th>
@@ -51,6 +52,16 @@
             <% @measurements.each do |measurement| %>
               <tr>
                 <td class="text-nowrap"><%= measurement.measured_at.strftime("%m/%d %H:%M") %></td>
+                <td>
+                  <% if measurement.photo.attached? %>
+                    <%= image_tag measurement.photo.variant(resize_to_limit: [60, 60]),
+                        class: "rounded",
+                        style: "cursor: pointer;",
+                        data: { bs_toggle: "modal", bs_target: "#photoModal#{measurement.id}" } %>
+                  <% else %>
+                    <span class="text-muted">-</span>
+                  <% end %>
+                </td>
                 <td class="text-center param-col" data-param="ph"><%= measurement.ph || "-" %></td>
                 <td class="text-center param-col" data-param="kh"><%= measurement.kh || "-" %></td>
                 <td class="text-center param-col" data-param="gh"><%= measurement.gh || "-" %></td>
@@ -75,6 +86,27 @@
     <% end %>
   </div>
 </div>
+
+<!-- Photo Modals -->
+<% @measurements.each do |measurement| %>
+  <% if measurement.photo.attached? %>
+    <div class="modal fade" id="photoModal<%= measurement.id %>" tabindex="-1" aria-labelledby="photoModalLabel<%= measurement.id %>" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="photoModalLabel<%= measurement.id %>">
+              Photo - <%= measurement.measured_at.strftime("%m/%d/%Y %H:%M") %>
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <%= image_tag measurement.photo, class: "img-fluid" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

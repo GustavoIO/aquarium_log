@@ -28,9 +28,11 @@ services:
     volumes:
       - .:/app
       - bundle_cache:/usr/local/bundle
+      - storage_data:/app/storage
     stdin_open: true
     tty: true
 
 volumes:
   postgres_data:
   bundle_cache:
+  storage_data:

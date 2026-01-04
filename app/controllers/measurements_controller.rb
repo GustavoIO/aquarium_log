@@ -20,6 +20,7 @@ class MeasurementsController < ApplicationController
   end
 
   def update
+    @measurement.photo.purge if params[:measurement][:remove_photo] == "1"
     if @measurement.update(measurement_params)
       redirect_to @aquarium, notice: "Measurement was successfully updated."
     else
@@ -51,6 +52,6 @@ class MeasurementsController < ApplicationController
   end
 
   def measurement_params
-    params.require(:measurement).permit(:ph, :kh, :gh, :nitrates, :phosphates, :measured_at)
+    params.require(:measurement).permit(:ph, :kh, :gh, :nitrates, :phosphates, :measured_at, :photo)
   end
 end
